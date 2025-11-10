@@ -140,4 +140,13 @@ def main():
     summarize_and_append(iqair_data, aqi_in_data)
 
 if __name__ == "__main__":
+
     main()
+import subprocess
+
+# commit and push the updated CSV file
+subprocess.run(["git", "config", "--global", "user.name", "aqi-bot"])
+subprocess.run(["git", "config", "--global", "user.email", "bot@example.com"])
+subprocess.run(["git", "add", "aqi_compare.csv"])
+subprocess.run(["git", "commit", "-m", f"Update data {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"])
+subprocess.run(["git", "push"])
