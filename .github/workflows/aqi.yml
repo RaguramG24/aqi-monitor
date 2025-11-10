@@ -1,18 +1,34 @@
 name: AQI Logger
 on:
-  workflow_dispatch:     # 👈 this line allows the manual "Run workflow" button
+  workflow_dispatch:     # manual trigger (Run workflow button)
   schedule:
     - cron: '0 */4 * * *'   # every 4 hours
+
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup Python
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          # keep credentials so commit/push steps can use GITHUB_TOKEN
+          persist-credentials: true
+
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Run script
+
+      - name: Run AQI script
         run: python coimbatore_aqi_compare.py
+
+      - name: Commit updated CSV (if there are changes)
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Update aqi_compare.csv — ${{ github.run_id }}"
+          add: "aqi_compare.csv"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
