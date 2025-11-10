@@ -1,0 +1,17 @@
+name: AQI Logger
+on:
+  schedule:
+    - cron:  '0 */4 * * *'   # every 4 hours
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run script
+        run: python coimbatore_aqi_compare.py
