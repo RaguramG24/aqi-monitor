@@ -1,7 +1,8 @@
 name: AQI Logger
 on:
+  workflow_dispatch:     # 👈 this line allows the manual "Run workflow" button
   schedule:
-    - cron:  '0 */4 * * *'   # every 4 hours
+    - cron: '0 */4 * * *'   # every 4 hours
 jobs:
   run:
     runs-on: ubuntu-latest
