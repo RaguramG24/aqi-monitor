@@ -1,8 +1,13 @@
 name: AQI Logger
+# allow manual run + schedule
 on:
-  workflow_dispatch:     # manual trigger (Run workflow button)
+  workflow_dispatch:
   schedule:
     - cron: '0 */4 * * *'   # every 4 hours
+
+# give permission for workflow to write repository contents (required to push files)
+permissions:
+  contents: write
 
 jobs:
   run:
@@ -11,10 +16,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
-          # keep credentials so commit/push steps can use GITHUB_TOKEN
           persist-credentials: true
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
